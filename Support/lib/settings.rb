@@ -1,5 +1,5 @@
 require ENV['TM_SUPPORT_PATH'] + '/lib/escape.rb'
-require ENV['TM_SUPPORT_PATH'] + '/lib/osx/plist'
+require ENV['TM_SUPPORT_PATH'] + '/private/plist'
 
 class Marker
   attr_reader :name, :regexp, :color
@@ -59,7 +59,7 @@ class Settings
   ]
   
   def self.markers
-    plist = open(ENV['HOME'] + "/Library/Preferences/#{ENV['TM_APP_IDENTIFIER'] || 'com.macromates.textmate'}.plist") { |io| OSX::PropertyList.load(io) }
+    plist = open(ENV['HOME'] + "/Library/Preferences/#{ENV['TM_APP_IDENTIFIER'] || 'com.macromates.textmate'}.plist") { |io| Plist.load(io) }
     res = plist['TODO Markers'] || @defaults
     res.map { |e| Marker.new(e) }.reject { |e| e.disabled? }
   end
